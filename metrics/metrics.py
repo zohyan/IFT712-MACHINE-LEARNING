@@ -34,3 +34,5 @@ class Metrics:
             plt.title("CONFUSION MATRIX VISUALIZATION OF THE TRAINING")
         else:
             plt.title("CONFUSION MATRIX VISUALIZATION OF THE TESTING")
+
+        plt.show()
