@@ -1,6 +1,8 @@
 from sklearn.metrics import log_loss
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import hinge_loss
+import numpy as np
 
 class Metrics:
 
@@ -36,3 +38,14 @@ class Metrics:
             plt.title("CONFUSION MATRIX VISUALIZATION OF THE TESTING")
 
         plt.show()
+
+    def hinge_loss(self, model, x, y, training):
+        y_copy = np.copy(y)
+        y_copy[y_copy == 0] = -1
+        pred = model.predict(x)
+        pred[pred == 0] = -1
+
+        if training:
+            print("Training Hinge loss", round(hinge_loss(y_copy, pred), 2))
+        else:
+            print("Testing Hinge loss", round(hinge_loss(y_copy, pred), 2))
