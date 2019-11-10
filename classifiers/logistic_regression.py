@@ -31,7 +31,7 @@ class LogisticRegressionClassifier:
             self.metrics.log_loss(self.logreg, x, y, training)
 
         elif metrics == "Confusion Matrix":
-            self.metrics.confusion_matrix(self.logreg, x, y, training)
+            self.metrics.log_loss(self.logreg, x, y, training)
 
 LR = LogisticRegressionClassifier()
 LR.train()
