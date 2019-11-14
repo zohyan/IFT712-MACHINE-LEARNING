@@ -29,7 +29,3 @@ class AdaBoostAlgorithmClassifier:
 
         elif metrics == "Confusion Matrix":
             self.metrics.confusion_matrix(self.model, x, y, training)
-
-model = AdaBoostAlgorithmClassifier()
-model.train()
-model.evaluate(training=False, metrics="Accuracy")

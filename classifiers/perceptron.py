@@ -7,7 +7,7 @@ from metrics.metrics import Metrics
 class PerceptronClassifier:
 
     def __init__(self):
-        self.model = Perceptron()
+        self.model = Perceptron(max_iter=5, tol=None)
         self.metrics = Metrics()
         self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().naive_preprocessing_data()
 
@@ -32,7 +32,3 @@ class PerceptronClassifier:
 
         elif metrics == "Confusion Matrix":
             self.metrics.confusion_matrix(self.model, x, y, training)
-
-model = PerceptronClassifier()
-model.train()
-model.evaluate(training=True, metrics="Hinge Loss")

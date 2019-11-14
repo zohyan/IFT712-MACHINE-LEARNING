@@ -49,17 +49,3 @@ class LogisticRegressionClassifier:
         gridsearch = pd.DataFrame([pd.Series(x) for x in [pty,  np.round(c,  decimals=2), np.round(mean*100.0, decimals=2)]]).T
         gridsearch.columns = ['Penalty', 'C', 'Accuracy']
         print(gridsearch)
-
-LR = LogisticRegressionClassifier()
-LR.train()
-LR.evaluate(training=True, metrics="Accuracy")
-LR.evaluate(training=False, metrics="Accuracy")
-
-print('--- After cross-validation ---')
-penalty, c = LR.tunning_model(['l1', 'l2'], np.logspace(0, 3, 10), 5)
-LR = LogisticRegressionClassifier(penalty, c)
-LR.train()
-LR.evaluate(training=True, metrics="Accuracy")
-LR.evaluate(training=False, metrics="Accuracy")
-
-# LR.print_combination()

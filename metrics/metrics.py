@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import hinge_loss
 import numpy as np
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 class Metrics:
 

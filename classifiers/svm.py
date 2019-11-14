@@ -29,7 +29,3 @@ class SVMClassifier:
 
         elif metrics == "Confusion Matrix":
             self.metrics.confusion_matrix(self.svm, x, y, training)
-
-svm = SVMClassifier()
-svm.train()
-svm.evaluate(training=False, metrics="Confusion Matrix")
