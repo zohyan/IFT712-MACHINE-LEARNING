@@ -41,17 +41,17 @@ def main():
             model.evaluate(training=True, metrics=sys.argv[2])
             model.evaluate(training=False, metrics=sys.argv[2])
 
-    if sys.argv[1] == 'adaboost':
-        model = AdaBoostAlgorithmClassifier()
-        model.train()
-        model.evaluate(training=True, metrics=sys.argv[2])
-        model.evaluate(training=False, metrics=sys.argv[2])
+        if sys.argv[1] == 'adaboost':
+            model = AdaBoostAlgorithmClassifier()
+            model.train()
+            model.evaluate(training=True, metrics=sys.argv[2])
+            model.evaluate(training=False, metrics=sys.argv[2])
 
-    if sys.argv[1] == 'decision_tree':
-        model = DecisionTreeAlgorithmClassifier()
-        model.train()
-        model.evaluate(training=True, metrics=sys.argv[2])
-        model.evaluate(training=False, metrics=sys.argv[2])
+        if sys.argv[1] == 'decision_tree':
+            model = DecisionTreeAlgorithmClassifier()
+            model.train()
+            model.evaluate(training=True, metrics=sys.argv[2])
+            model.evaluate(training=False, metrics=sys.argv[2])
 
 if __name__ == "__main__":
     main()
