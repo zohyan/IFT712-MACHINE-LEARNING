@@ -18,14 +18,14 @@ class SVMClassifier:
         self.train()
         return self.svm.predict(x)
 
-    def evaluate(self, training=True, metrics="Accuracy"):
+    def evaluate(self, training=True, metrics="accuracy"):
         if training:
             x, y = self.X_train, self.Y_train
         else:
             x, y = self.X_test, self.Y_test
 
-        if metrics == "Accuracy":
+        if metrics == "accuracy":
             self.metrics.accuracy(self.svm, x, y, training)
 
-        elif metrics == "Confusion Matrix":
+        elif metrics == "confusion_matrix":
             self.metrics.confusion_matrix(self.svm, x, y, training)
