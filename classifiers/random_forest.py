@@ -29,7 +29,3 @@ class RandomForestAlgorithmClassifier:
 
         elif metrics == "Confusion Matrix":
             self.metrics.confusion_matrix(self.model, x, y, training)
-
-model = RandomForestAlgorithmClassifier()
-model.train()
-model.evaluate(training=False, metrics="Accuracy")

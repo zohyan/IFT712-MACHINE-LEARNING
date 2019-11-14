@@ -32,7 +32,3 @@ class FullyConnectedClassifier:
 
         elif metrics == "Confusion Matrix":
             self.metrics.confusion_matrix(self.fc, x, y, training)
-
-FC = FullyConnectedClassifier()
-FC.train()
-FC.evaluate(training=False, metrics="Confusion Matrix")

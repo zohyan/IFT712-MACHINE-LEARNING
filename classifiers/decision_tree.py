@@ -29,7 +29,3 @@ class DecisionTreeAlgorithmClassifier:
 
         elif metrics == "Confusion Matrix":
             self.metrics.confusion_matrix(self.model, x, y, training)
-
-model = DecisionTreeAlgorithmClassifier()
-model.train()
-model.evaluate(training=False, metrics="Confusion Matrix")
