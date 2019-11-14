@@ -7,7 +7,7 @@ from sklearn.svm import SVC, LinearSVC
 class SVMClassifier:
 
     def __init__(self):
-        self.svm = SVC()
+        self.svm = SVC(probability=True)
         self.metrics = Metrics()
         self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().naive_preprocessing_data()
 
@@ -29,3 +29,6 @@ class SVMClassifier:
 
         elif metrics == "confusion_matrix":
             self.metrics.confusion_matrix(self.svm, x, y, training)
+
+        elif metrics == "roc":
+            self.metrics.plot_roc(self.svm, x, y)

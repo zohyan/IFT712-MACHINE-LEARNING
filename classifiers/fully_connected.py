@@ -32,3 +32,6 @@ class FullyConnectedClassifier:
 
         elif metrics == "confusion_matrix":
             self.metrics.confusion_matrix(self.fc, x, y, training)
+
+        elif metrics == "roc":
+            self.metrics.plot_roc(self.fc, x, y)

@@ -37,6 +37,9 @@ class LogisticRegressionClassifier:
         elif metrics == "confusion_matrix":
             self.metrics.confusion_matrix(self.logreg, x, y, training)
 
+        elif metrics == "roc":
+            self.metrics.plot_roc(self.logreg, x, y)
+
     def tunning_model(self, penalty, C, cv):
         self.cv = CrossValidation(self.logreg, dict(C=C, penalty=penalty), cv)
         self.cv.fit_cross_validation(self.X_train, self.Y_train)

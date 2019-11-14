@@ -2,6 +2,8 @@ from sklearn.metrics import log_loss
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import hinge_loss
+from sklearn.metrics import roc_curve
+from sklearn.metrics import roc_auc_score
 import numpy as np
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -51,3 +53,17 @@ class Metrics:
             print("Training Hinge loss", round(hinge_loss(y_copy, pred), 2))
         else:
             print("Testing Hinge loss", round(hinge_loss(y_copy, pred), 2))
+
+    def plot_roc(self, model, x, y):
+        prob = model.predict_proba(x)
+        prob = prob[:, 1]
+        auc = roc_auc_score(y, prob)
+        print('AUC: %.2f' % auc)
+        fpr, tpr, thresholds = roc_curve(y, prob)
+        plt.plot(fpr, tpr, color='orange', label='ROC')
+        plt.plot([0, 1], [0, 1], color='darkblue', linestyle='--')
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('Receiver Operating Characteristic (ROC) Curve')
+        plt.legend()
+        plt.show()

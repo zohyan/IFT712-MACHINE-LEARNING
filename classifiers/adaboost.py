@@ -29,3 +29,6 @@ class AdaBoostAlgorithmClassifier:
 
         elif metrics == "confusion_matrix":
             self.metrics.confusion_matrix(self.model, x, y, training)
+
+        elif metrics == "roc":
+            self.metrics.plot_roc(self.model, x, y)

@@ -10,48 +10,32 @@ from classifiers.decision_tree import DecisionTreeAlgorithmClassifier
 
 def main():
 
-    if sys.argv[2] in ['accuracy', 'log_loss', 'confusion_matrix', 'hinge_loss']:
+    if sys.argv[2] in ['accuracy', 'log_loss', 'confusion_matrix', 'hinge_loss', 'roc']:
+
         if sys.argv[1] == 'logistic_regression':
             model = LogisticRegressionClassifier()
-            model.train()
-            model.evaluate(training=True, metrics=sys.argv[2])
-            model.evaluate(training=False, metrics=sys.argv[2])
 
-        if sys.argv[1] == 'perceptron':
+        elif sys.argv[1] == 'perceptron':
             model = PerceptronClassifier()
-            model.train()
-            model.evaluate(training=True, metrics=sys.argv[2])
-            model.evaluate(training=False, metrics=sys.argv[2])
 
-        if sys.argv[1] == 'random_forest':
+        elif sys.argv[1] == 'random_forest':
             model = RandomForestAlgorithmClassifier()
-            model.train()
-            model.evaluate(training=True, metrics=sys.argv[2])
-            model.evaluate(training=False, metrics=sys.argv[2])
 
-        if sys.argv[1] == 'svm':
+        elif sys.argv[1] == 'svm':
             model = SVMClassifier()
-            model.train()
-            model.evaluate(training=True, metrics=sys.argv[2])
-            model.evaluate(training=False, metrics=sys.argv[2])
 
-        if sys.argv[1] == 'fully_connected':
+        elif sys.argv[1] == 'fully_connected':
             model = FullyConnectedClassifier()
-            model.train()
-            model.evaluate(training=True, metrics=sys.argv[2])
-            model.evaluate(training=False, metrics=sys.argv[2])
 
-        if sys.argv[1] == 'adaboost':
+        elif sys.argv[1] == 'adaboost':
             model = AdaBoostAlgorithmClassifier()
-            model.train()
-            model.evaluate(training=True, metrics=sys.argv[2])
-            model.evaluate(training=False, metrics=sys.argv[2])
 
-        if sys.argv[1] == 'decision_tree':
+        elif sys.argv[1] == 'decision_tree':
             model = DecisionTreeAlgorithmClassifier()
-            model.train()
-            model.evaluate(training=True, metrics=sys.argv[2])
-            model.evaluate(training=False, metrics=sys.argv[2])
+
+        model.train()
+        model.evaluate(training=True, metrics=sys.argv[2])
+        model.evaluate(training=False, metrics=sys.argv[2])
 
 if __name__ == "__main__":
     main()
