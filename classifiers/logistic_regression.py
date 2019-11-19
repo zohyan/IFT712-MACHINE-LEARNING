@@ -13,7 +13,7 @@ class LogisticRegressionClassifier:
         self.logreg = LogisticRegression(penalty=penalty, C=C)
         self.metrics = Metrics()
         self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().naive_preprocessing_data()
-        self.cv =None
+        self.cv = None
 
     def train(self):
         self.logreg.fit(self.X_train, self.Y_train)
@@ -40,10 +40,14 @@ class LogisticRegressionClassifier:
         elif metrics == "roc":
             self.metrics.plot_roc(self.logreg, x, y)
 
-    def tunning_model(self, penalty, C, cv):
-        self.cv = CrossValidation(self.logreg, dict(C=C, penalty=penalty), cv)
+    def tunning_model(self, hyperparameters, kfold, metrics):
+        self.cv = CrossValidation(self.logreg, hyperparameters, kfold)
         self.cv.fit_cross_validation(self.X_train, self.Y_train)
-        return self.cv.get_best_hyperparams()['penalty'], self.cv.get_best_hyperparams()['C']
+        model_tunned = LogisticRegressionClassifier(self.cv.get_best_hyperparams()['penalty'], self.cv.get_best_hyperparams()['C'])
+        model_tunned.train()
+        print("** After cross validation **")
+        model_tunned.evaluate(training=True, metrics=metrics)
+        model_tunned.evaluate(training=False, metrics=metrics)
 
     def print_combination(self):
         params, mean = [self.cv.get_clf().cv_results_[key] for key in ['params', 'mean_test_score']]
@@ -52,3 +56,8 @@ class LogisticRegressionClassifier:
         gridsearch = pd.DataFrame([pd.Series(x) for x in [pty,  np.round(c,  decimals=2), np.round(mean*100.0, decimals=2)]]).T
         gridsearch.columns = ['Penalty', 'C', 'Accuracy']
         print(gridsearch)
+
+    def cross_validate(self, hyperparameters, kfold):
+        cross_validation = CrossValidation(self.logreg, hyperparameters, kfold)
+        cross_validation.fit_cross_validation(self.X_train, self.Y_train)
+        print('model_after_fitting ', cross_validation.get_clf())
