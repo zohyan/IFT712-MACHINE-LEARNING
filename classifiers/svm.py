@@ -26,9 +26,7 @@ class SVMClassifier:
         model_tunned.evaluate(training=True, metrics=metrics)
         model_tunned.evaluate(training=False, metrics=metrics)
 
-
     def predict(self, x):
-        self.train()
         return self.svm.predict(x)
 
     def evaluate(self, training=True, metrics="accuracy"):
