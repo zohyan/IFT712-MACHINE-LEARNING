@@ -30,7 +30,19 @@ def main():
             model = RandomForestAlgorithmClassifier()
 
         elif sys.argv[1] == 'svm':
-            model = SVMClassifier()
+            model  = SVMClassifier()
+
+            model.train()
+            model.evaluate(training=True, metrics=sys.argv[2])
+            model.evaluate(training=False, metrics=sys.argv[2])
+
+            if sys.argv[3] == '1':
+                Cs = [0.1, 1, 10, 100, 1000]
+                gammas = [1, 0.1, 0.01, 0.001, 0.0001]
+                kfold = 5
+                hyperparameters = {'C': Cs, 'gamma': gammas , 'kernel':  ['rbf']}
+
+                model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'fully_connected':
             model = FullyConnectedClassifier()
