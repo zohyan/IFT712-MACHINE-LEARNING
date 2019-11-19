@@ -1,5 +1,6 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+import numpy as np
 from classifiers.logistic_regression import LogisticRegressionClassifier
 from classifiers.perceptron import PerceptronClassifier
 from classifiers.random_forest import RandomForestAlgorithmClassifier
@@ -14,6 +15,13 @@ def main():
 
         if sys.argv[1] == 'logistic_regression':
             model = LogisticRegressionClassifier()
+            model.train()
+            model.evaluate(training=True, metrics=sys.argv[2])
+            model.evaluate(training=False, metrics=sys.argv[2])
+
+            if sys.argv[3] == '1':
+                hyperparameters = dict(penalty=['l1', 'l2'], C=np.logspace(0, 4, 10))
+                model.tunning_model(hyperparameters, 5, sys.argv[2])
 
         elif sys.argv[1] == 'perceptron':
             model = PerceptronClassifier()
@@ -33,9 +41,6 @@ def main():
         elif sys.argv[1] == 'decision_tree':
             model = DecisionTreeAlgorithmClassifier()
 
-        model.train()
-        model.evaluate(training=True, metrics=sys.argv[2])
-        model.evaluate(training=False, metrics=sys.argv[2])
 
 if __name__ == "__main__":
     main()
