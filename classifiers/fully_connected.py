@@ -15,7 +15,6 @@ class FullyConnectedClassifier:
         self.fc.fit(self.X_train, self.Y_train)
 
     def predict(self, x):
-        self.train()
         return self.fc.predict(x)
 
     def evaluate(self, training=True, metrics="accuracy"):
@@ -26,9 +25,6 @@ class FullyConnectedClassifier:
 
         if metrics == "accuracy":
             self.metrics.accuracy(self.fc, x, y, training)
-
-        elif metrics == "log_loss":
-            self.metrics.log_loss(self.fc, x, y, training)
 
         elif metrics == "confusion_matrix":
             self.metrics.confusion_matrix(self.fc, x, y, training)

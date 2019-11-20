@@ -28,7 +28,6 @@ class SVMClassifier:
 
 
     def predict(self, x):
-        self.train()
         return self.svm.predict(x)
 
     def evaluate(self, training=True, metrics="accuracy"):

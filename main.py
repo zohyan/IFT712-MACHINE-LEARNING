@@ -11,7 +11,7 @@ from classifiers.decision_tree import DecisionTreeAlgorithmClassifier
 
 def main():
 
-    if sys.argv[2] in ['accuracy', 'log_loss', 'confusion_matrix', 'hinge_loss', 'roc']:
+    if sys.argv[2] in ['accuracy', 'log_loss', 'confusion_matrix', 'roc']:
 
         if sys.argv[1] == 'logistic_regression':
             model = LogisticRegressionClassifier()

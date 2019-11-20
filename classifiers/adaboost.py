@@ -15,7 +15,6 @@ class AdaBoostAlgorithmClassifier:
         self.model.fit(self.X_train, self.Y_train)
 
     def predict(self, x):
-        self.train()
         return self.model.predict(x)
 
     def evaluate(self, training=True, metrics="accuracy"):
