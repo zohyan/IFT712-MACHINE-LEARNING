@@ -19,7 +19,6 @@ class LogisticRegressionClassifier:
         self.logreg.fit(self.X_train, self.Y_train)
 
     def predict(self, x):
-        self.train()
         return self.logreg.predict(x)
 
     def evaluate(self, training=True, metrics="accuracy"):
@@ -30,9 +29,6 @@ class LogisticRegressionClassifier:
 
         if metrics == "accuracy":
             self.metrics.accuracy(self.logreg, x, y, training)
-
-        elif metrics == "log_loss":
-            self.metrics.log_loss(self.logreg, x, y, training)
 
         elif metrics == "confusion_matrix":
             self.metrics.confusion_matrix(self.logreg, x, y, training)
