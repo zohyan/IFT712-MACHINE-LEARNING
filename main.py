@@ -10,18 +10,21 @@ from classifiers.adaboost import AdaBoostAlgorithmClassifier
 from classifiers.decision_tree import DecisionTreeAlgorithmClassifier
 
 def main():
-
-    if sys.argv[2] in ['accuracy', 'log_loss', 'confusion_matrix', 'hinge_loss', 'roc']:
+    if sys.argv[2] in ['accuracy', 'confusion_matrix', 'roc']:
 
         if sys.argv[1] == 'logistic_regression':
             model = LogisticRegressionClassifier()
             model.train()
-            model.evaluate(training=True, metrics=sys.argv[2])
-            model.evaluate(training=False, metrics=sys.argv[2])
+            model.evaluate(label="Training", metrics=sys.argv[2])
+            model.evaluate(label="Testing", metrics=sys.argv[2])
 
             if sys.argv[3] == '1':
-                hyperparameters = dict(penalty=['l1', 'l2'], C=np.logspace(0, 4, 10))
-                model.tunning_model(hyperparameters, 5, sys.argv[2])
+                kfold = 5
+                hyperparameters = {
+                    'penalty': ['l1', 'l2'],
+                    'C': np.logspace(0, 4, 10)
+                }
+                model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'perceptron':
             model = PerceptronClassifier()
@@ -30,22 +33,38 @@ def main():
             model = RandomForestAlgorithmClassifier()
 
         elif sys.argv[1] == 'svm':
-            model  = SVMClassifier()
+            model = SVMClassifier()
 
             model.train()
-            model.evaluate(training=True, metrics=sys.argv[2])
-            model.evaluate(training=False, metrics=sys.argv[2])
+            model.evaluate(label="Training", metrics=sys.argv[2])
+            model.evaluate(label="Testing", metrics=sys.argv[2])
 
             if sys.argv[3] == '1':
-                Cs = [0.1, 1, 10, 100, 1000]
-                gammas = [1, 0.1, 0.01, 0.001, 0.0001]
                 kfold = 5
-                hyperparameters = {'C': Cs, 'gamma': gammas , 'kernel':  ['rbf']}
-
+                hyperparameters = {
+                    'C': [0.1, 1, 10, 100, 1000],
+                    'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
+                    'kernel':  ['rbf']
+                }
                 model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'fully_connected':
             model = FullyConnectedClassifier()
+
+            model.train()
+            model.evaluate(label="Training", metrics=sys.argv[2])
+            model.evaluate(label="Testing", metrics=sys.argv[2])
+
+            if sys.argv[3] == '1':
+                kfold = 5
+                hyperparameters = {
+                    'hidden_layer_sizes': [(5, ), (5, 5)],
+                    'activation': ['tanh', 'relu'],
+                    'solver': ['adam', 'lbfgs'],
+                    'alpha': [1e-5, 3e-4, 7e-2],
+                    'learning_rate_init':  [1e-2, 1e-3, 1e-4]
+                }
+                model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'adaboost':
             model = AdaBoostAlgorithmClassifier()

@@ -1,19 +1,26 @@
+import os, sys
 from sklearn.model_selection import GridSearchCV
+from metrics.metrics import Metrics
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 class CrossValidation:
 
-    def __init__(self, model, hyperparameters, cv):
-        self.model = model
-        self.hyperparameters = hyperparameters
-        self.cv = cv
-        self.model_after_fitting = None
-        self.clf = GridSearchCV(self.model, self.hyperparameters, cv=self.cv)
+    def __init__(self, model, hyperparameters, kfold):
+        self.metrics = Metrics()
+        self.clf = GridSearchCV(model, hyperparameters, cv=kfold)
 
-    def fit_cross_validation(self, x, y):
-        self.model_after_fitting = self.clf.fit(x, y)
+    def fit_and_predict(self, x_train, y_train, x_test, y_test, metrics):
+        prediction = self.clf.fit(x_train, y_train).best_estimator_.predict(x_test)
 
-    def get_best_hyperparams(self):
-        return self.model_after_fitting.best_estimator_.get_params()
+        if metrics == "accuracy":
+            self.metrics.accuracy_after_validation(prediction, y_test)
+
+        elif metrics == "confusion_matrix":
+            self.metrics.confusion_matrix_after_validation(prediction, y_test)
+
+        elif metrics == "roc":
+            prob = self.clf.fit(x_train, y_train).best_estimator_.predict_proba(x_test)
+            self.metrics.plot_roc_after_validation(prob[:, 1], y_test)
 
     def get_clf(self):
         return self.clf

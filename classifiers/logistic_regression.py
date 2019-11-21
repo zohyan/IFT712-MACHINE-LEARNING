@@ -10,50 +10,40 @@ import pandas as pd
 class LogisticRegressionClassifier:
 
     def __init__(self, penalty='l1', C=1):
-        self.logreg = LogisticRegression(penalty=penalty, C=C)
+        self.model = LogisticRegression(penalty=penalty, solver="liblinear", C=C)
         self.metrics = Metrics()
         self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().naive_preprocessing_data()
-        self.cv = None
+        self.cross_validated_model = None
 
     def train(self):
-        self.logreg.fit(self.X_train, self.Y_train)
+        self.model.fit(self.X_train, self.Y_train)
 
     def predict(self, x):
-        return self.logreg.predict(x)
+        return self.model.predict(x)
 
-    def evaluate(self, training=True, metrics="accuracy"):
-        if training:
+    def evaluate(self, label="Training", metrics="accuracy"):
+        if label == 'Training':
             x, y = self.X_train, self.Y_train
         else:
             x, y = self.X_test, self.Y_test
 
         if metrics == "accuracy":
-            self.metrics.accuracy(self.logreg, x, y, training)
+            self.metrics.accuracy(self.model, x, y, label)
 
         elif metrics == "confusion_matrix":
-            self.metrics.confusion_matrix(self.logreg, x, y, training)
+            self.metrics.confusion_matrix(self.model, x, y, label)
 
         elif metrics == "roc":
-            self.metrics.plot_roc(self.logreg, x, y)
+            self.metrics.plot_roc(self.model, x, y, label)
 
     def tunning_model(self, hyperparameters, kfold, metrics):
-        self.cv = CrossValidation(self.logreg, hyperparameters, kfold)
-        self.cv.fit_cross_validation(self.X_train, self.Y_train)
-        model_tunned = LogisticRegressionClassifier(self.cv.get_best_hyperparams()['penalty'], self.cv.get_best_hyperparams()['C'])
-        model_tunned.train()
-        print("** After cross validation **")
-        model_tunned.evaluate(training=True, metrics=metrics)
-        model_tunned.evaluate(training=False, metrics=metrics)
+        cross_validate_model = CrossValidation(self.model, hyperparameters, kfold)
+        cross_validate_model.fit_and_predict(self.X_train, self.Y_train, self.X_test, self.Y_test, metrics)
 
     def print_combination(self):
         params, mean = [self.cv.get_clf().cv_results_[key] for key in ['params', 'mean_test_score']]
         pty = [p['penalty'] for p in params]
         c = [p['C'] for p in params]
-        gridsearch = pd.DataFrame([pd.Series(x) for x in [pty,  np.round(c,  decimals=2), np.round(mean*100.0, decimals=2)]]).T
+        gridsearch = pd.DataFrame([pd.Series(x) for x in [pty,  np.round(c, decimals=2), np.round(mean*100.0, decimals=2)]]).T
         gridsearch.columns = ['Penalty', 'C', 'Accuracy']
         print(gridsearch)
-
-    def cross_validate(self, hyperparameters, kfold):
-        cross_validation = CrossValidation(self.logreg, hyperparameters, kfold)
-        cross_validation.fit_cross_validation(self.X_train, self.Y_train)
-        print('model_after_fitting ', cross_validation.get_clf())
