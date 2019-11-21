@@ -10,7 +10,7 @@ import pandas as pd
 class LogisticRegressionClassifier:
 
     def __init__(self, penalty='l1', C=1):
-        self.model = LogisticRegression(penalty=penalty, C=C, solver="liblinear")
+        self.model = LogisticRegression(penalty=penalty, solver="liblinear", C=C)
         self.metrics = Metrics()
         self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().naive_preprocessing_data()
         self.cross_validated_model = None

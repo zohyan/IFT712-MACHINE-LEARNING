@@ -5,9 +5,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 class CrossValidation:
 
-    def __init__(self, model, hyperparameters, cv):
+    def __init__(self, model, hyperparameters, kfold):
         self.metrics = Metrics()
-        self.clf = GridSearchCV(model, hyperparameters, cv=cv)
+        self.clf = GridSearchCV(model, hyperparameters, cv=kfold)
 
     def fit_and_predict(self, x_train, y_train, x_test, y_test, metrics):
         prediction = self.clf.fit(x_train, y_train).best_estimator_.predict(x_test)
