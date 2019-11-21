@@ -12,6 +12,7 @@ class Metrics:
         accuracy = round(model.score(x, y) * 100, 2)
         print(label + ' accuracy', accuracy, " %")
 
+
     def accuracy_after_validation(self, pred, y):
         print('Testing accuracy after cross-validation ', round(metrics.accuracy_score(pred, y) * 100), " %")
 
@@ -28,6 +29,7 @@ class Metrics:
 
         plt.title("CONFUSION MATRIX VISUALIZATION OF THE "+label)
         plt.show()
+
 
     def confusion_matrix_after_validation(self, pred, y):
         plt.imshow(confusion_matrix(y, pred), interpolation='nearest', cmap=plt.cm.Blues)
