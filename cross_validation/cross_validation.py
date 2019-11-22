@@ -7,7 +7,7 @@ class CrossValidation:
 
     def __init__(self, model, hyperparameters, kfold):
         self.metrics = Metrics()
-        self.clf = GridSearchCV(model, hyperparameters, cv=kfold)
+        self.clf = GridSearchCV(model, hyperparameters, cv=kfold, verbose=10, n_jobs=-1)
 
     def fit_and_predict(self, x_train, y_train, x_test, y_test, metrics):
         prediction = self.clf.fit(x_train, y_train).best_estimator_.predict(x_test)

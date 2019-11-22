@@ -28,6 +28,18 @@ def main():
 
         elif sys.argv[1] == 'perceptron':
             model = PerceptronClassifier()
+            model.train()
+            model.evaluate(label="Training", metrics=sys.argv[2])
+            model.evaluate(label="Testing", metrics=sys.argv[2])
+
+            if sys.argv[3] == '1':
+                kfold = 5
+                hyperparameters = {
+                    'penalty': ['l1', 'l2'],
+                    'alpha': [1e-4, 0.004, 0.005, 0.008],
+                    'tol': [0.20, 0.19, 0.15, 0.25]
+                }
+                model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'random_forest':
             model = RandomForestAlgorithmClassifier()
