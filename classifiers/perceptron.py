@@ -16,7 +16,6 @@ class PerceptronClassifier:
         self.model.fit(self.X_train, self.Y_train)
 
     def predict(self, x):
-        self.train()
         return self.model.predict(x)
 
     def evaluate(self, label="Training", metrics="accuracy"):
@@ -27,7 +26,6 @@ class PerceptronClassifier:
 
         if metrics == "accuracy":
             self.metrics.accuracy(self.model, x, y, label)
-
         elif metrics == "confusion_matrix":
             self.metrics.confusion_matrix(self.model, x, y, label)
 
