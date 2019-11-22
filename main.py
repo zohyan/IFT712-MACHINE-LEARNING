@@ -43,6 +43,30 @@ def main():
 
         elif sys.argv[1] == 'random_forest':
             model = RandomForestAlgorithmClassifier()
+            model.train()
+            model.evaluate(label="Training", metrics=sys.argv[2])
+            model.evaluate(label="Testing", metrics=sys.argv[2])
+
+            if sys.argv[3] == '1':
+                kfold = 5
+
+                n_estimators = [int(x) for x in np.linspace(start=200, stop=500 , num=10)]
+                max_features = ['auto', 'sqrt']
+                max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
+                max_depth.append(None)
+                min_samples_split = [2, 5, 10]
+                min_samples_leaf = [1, 2, 4]
+                bootstrap = [True, False]
+
+                hyperparameters = {
+                    'n_estimators': n_estimators,
+                    'max_features': max_features,
+                    'max_depth': max_depth,
+                    'min_samples_split': min_samples_split,
+                    'min_samples_leaf': min_samples_leaf,
+                    'bootstrap': bootstrap
+                }
+                model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'svm':
             model = SVMClassifier()
