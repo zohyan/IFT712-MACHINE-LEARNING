@@ -8,7 +8,7 @@ from cross_validation.cross_validation import CrossValidation
 class FullyConnectedClassifier:
 
     def __init__(self, hidden_layer_sizes=(10,), activation='relu', alpha=1e-2, learning_rate_init=1e-3, solver='adam'):
-        self.fc = MLPClassifier(random_state=None, hidden_layer_sizes=hidden_layer_sizes, activation=activation, alpha=alpha, learning_rate_init=learning_rate_init, solver=solver, max_iter=2000)
+        self.fc = MLPClassifier(random_state=None, hidden_layer_sizes=hidden_layer_sizes, activation=activation, alpha=alpha, learning_rate_init=learning_rate_init, solver=solver, max_iter=5000)
         self.metrics = Metrics()
         self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().naive_preprocessing_data()
         self.cv = None
