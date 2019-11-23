@@ -8,6 +8,7 @@ from classifiers.svm import SVMClassifier
 from classifiers.fully_connected import FullyConnectedClassifier
 from classifiers.adaboost import AdaBoostAlgorithmClassifier
 from classifiers.decision_tree import DecisionTreeAlgorithmClassifier
+from classifiers.bagging import BaggingAlgorithmClassifier
 
 def main():
     if sys.argv[2] in ['accuracy', 'confusion_matrix', 'roc']:
@@ -108,6 +109,18 @@ def main():
         elif sys.argv[1] == 'decision_tree':
             model = DecisionTreeAlgorithmClassifier()
 
+        elif sys.argv[1] == 'bagging':
+            model = BaggingAlgorithmClassifier()
+            model.train()
+            model.evaluate(label="Training", metrics=sys.argv[2])
+            model.evaluate(label="Testing", metrics=sys.argv[2])
+
+            if sys.argv[3] == '1':
+                kfold = 5
+                hyperparameters = {
+                    'weights': [[int(x) for x in list("{0:0b}".format(i).zfill(4))] for i in range(1, 2 ** 4)]
+                }
+                model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
 if __name__ == "__main__":
     main()
