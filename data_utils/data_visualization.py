@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os, sys
 sys.path.append(os.path.dirname(os.path.join(os.getcwd())))
-from data_utils.data_loader import DataLoader
+from data_loader import DataLoader
 
 
 class DataVisualization:
@@ -68,4 +68,4 @@ class DataVisualization:
         plt.show()
 
 dv = DataVisualization()
-dv.correlation_of_embarked_sex_variable_with_the_target_class()
+dv.correlation_of_numerical_variable_with_the_target_class('Age')
