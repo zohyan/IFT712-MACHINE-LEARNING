@@ -1,5 +1,5 @@
 import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(_file_))))
+sys.path.append(os.path.dirname(os.path.join(os.getcwd())))
 from classifiers.abstract_classifier import AbstractClassifier
 from sklearn.ensemble import VotingClassifier, RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
