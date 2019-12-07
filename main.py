@@ -1,5 +1,5 @@
 import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+sys.path.append(os.path.dirname(os.path.join(os.getcwd())))
 import numpy as np
 from classifiers.logistic_regression import LogisticRegressionClassifier
 from classifiers.perceptron import PerceptronClassifier
