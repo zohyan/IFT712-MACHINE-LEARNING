@@ -105,9 +105,32 @@ def main():
 
         elif sys.argv[1] == 'adaboost':
             model = AdaBoostAlgorithmClassifier()
+            model.train()
+            model.evaluate(label="Training", metrics=sys.argv[2])
+            model.evaluate(label="Testing", metrics=sys.argv[2])
+
+            if sys.argv[3] == '1':
+                kfold = 5
+                hyperparameters = {
+                    'base_estimator': [DecisionTreeAlgorithmClassifier().model],
+                    'n_estimators': [50, 55, 60, 65, 70],
+                    'algorithm': ['SAMME.R', 'SAMME']
+                }
+                model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'decision_tree':
             model = DecisionTreeAlgorithmClassifier()
+            model.train()
+            model.evaluate(label="Training", metrics=sys.argv[2])
+            model.evaluate(label="Testing", metrics=sys.argv[2])
+
+            if sys.argv[3] == '1':
+                kfold = 5
+                hyperparameters = {
+                    'criterion': ['entropy', 'gini'],
+                    'max_depth': [2, 4]
+                }
+                model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'bagging':
             model = BaggingAlgorithmClassifier()
