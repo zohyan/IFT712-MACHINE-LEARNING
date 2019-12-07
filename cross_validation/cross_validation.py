@@ -5,6 +5,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 
 class CrossValidation:
+    """
+    This class does k cross validation
+    """
 
     def __init__(self, model, hyperparameters, kfold):
         self.metrics = Metrics()
