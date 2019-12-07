@@ -1,7 +1,7 @@
 import os, sys
 from sklearn.model_selection import StratifiedKFold, GridSearchCV
 from metrics.metrics import Metrics
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+sys.path.append(os.path.dirname(os.path.join(os.getcwd())))
 
 
 class CrossValidation:
