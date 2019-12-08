@@ -1,22 +1,15 @@
 import pandas as pd
 import numpy as np
-import os
+import os, sys
+sys.path.append(os.path.dirname(os.path.join(os.getcwd())))
+from .data_loader import DataLoader
+
 
 class DataPreprocessing:
 
     def __init__(self):
-        self.path = 'datasets'
-        self.train_data, self.test_data, self.dataset = None, None, None
-
-    def load_data(self):
-        """
-        :return: Return the three raw datasets
-        """
-        self.train_data = pd.read_csv(os.path.join(self.path, 'train.csv'))
-        self.test_data = pd.read_csv(os.path.join(self.path, 'test.csv'))
-        gender_submission = pd.read_csv(os.path.join(self.path, 'gender_submission.csv'))
-
-        return self.train_data, self.test_data, gender_submission
+        self.dataset = None
+        self.train_data, self.test_data, self.gender_submission = DataLoader().load_data()
 
     def delete_features(self, df, features_to_delete):
         """
@@ -68,8 +61,10 @@ class DataPreprocessing:
         """
         freq_port = self.train_data.Embarked.dropna().mode()[0]
 
-        for row in self.dataset:
-            row['Embarked'] = row['Embarked'].fillna(freq_port)
+        self.train_data['Embarked'] = self.train_data['Embarked'].fillna(freq_port)
+        self.test_data['Embarked'] = self.test_data['Embarked'].fillna(freq_port)
+
+        self.dataset = [self.train_data, self.test_data]
 
         return self.dataset
 
@@ -88,6 +83,67 @@ class DataPreprocessing:
         """
         df_test['Fare'].fillna(df_test['Fare'].dropna().median(), inplace=True)
 
+    # preprocess vaovao
+    def creating_title_feature(self):
+
+        for dataset in self.dataset:
+            dataset['Title'] = dataset.Name.str.extract(' ([A-Za-z]+)\.', expand=False)
+
+        for dataset in self.dataset:
+            dataset['Title'] = dataset['Title'].replace(['Lady', 'Countess', 'Capt', 'Col', \
+                                                         'Don', 'Dr', 'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'],
+                                                        'Rare')
+
+            dataset['Title'] = dataset['Title'].replace('Mlle', 'Miss')
+            dataset['Title'] = dataset['Title'].replace('Ms', 'Miss')
+            dataset['Title'] = dataset['Title'].replace('Mme', 'Mrs')
+
+        title_mapping = {"Mr": 1, "Miss": 2, "Mrs": 3, "Master": 4, "Rare": 5}
+
+        for dataset in self.dataset:
+            dataset['Title'] = dataset['Title'].map(title_mapping)
+            dataset['Title'] = dataset['Title'].fillna(0)
+
+    def create_age_band_features(self):
+        self.train_data.loc[self.train_data['Age'] <= 16, 'Age'] = 0
+        self.train_data.loc[(self.train_data['Age'] > 16) & (self.train_data['Age'] <= 32), 'Age'] = 1
+        self.train_data.loc[(self.train_data['Age'] > 32) & (self.train_data['Age'] <= 48), 'Age'] = 2
+        self.train_data.loc[(self.train_data['Age'] > 48) & (self.train_data['Age'] <= 64), 'Age'] = 3
+        self.train_data.loc[self.train_data['Age'] > 64, 'Age']
+
+        self.test_data.loc[self.test_data['Age'] <= 16, 'Age'] = 0
+        self.test_data.loc[(self.test_data['Age'] > 16) & (self.test_data['Age'] <= 32), 'Age'] = 1
+        self.test_data.loc[(self.test_data['Age'] > 32) & (self.test_data['Age'] <= 48), 'Age'] = 2
+        self.test_data.loc[(self.test_data['Age'] > 48) & (self.test_data['Age'] <= 64), 'Age'] = 3
+        self.test_data.loc[self.test_data['Age'] > 64, 'Age']
+
+        self.dataset = [self.train_data, self.test_data]
+
+    def create_is_alone_feature(self):
+
+        self.train_data['FamilySize'] = self.train_data['SibSp'] + self.train_data['Parch'] + 1
+
+        self.train_data['IsAlone'] = 0
+        self.train_data.loc[self.train_data['FamilySize'] == 1, 'IsAlone'] = 1
+
+        self.test_data['FamilySize'] = self.test_data['SibSp'] +self.test_data['Parch'] + 1
+
+        self.test_data['IsAlone'] = 0
+        self.test_data.loc[self.test_data['FamilySize'] == 1, 'IsAlone'] = 1
+
+    def create_fare_band(self):
+        self.train_data.loc[self.train_data['Fare'] <= 7.91, 'Fare'] = 0
+        self.train_data.loc[(self.train_data['Fare'] > 7.91) & (self.train_data['Fare'] <= 14.454), 'Fare'] = 1
+        self.train_data.loc[(self.train_data['Fare'] > 14.454) & (self.train_data['Fare'] <= 31), 'Fare'] = 2
+        self.train_data.loc[self.train_data['Fare'] > 31, 'Fare'] = 3
+        self.train_data['Fare'] = self.train_data['Fare'].astype(int)
+
+        self.test_data.loc[self.test_data['Fare'] <= 7.91, 'Fare'] = 0
+        self.test_data.loc[(self.test_data['Fare'] > 7.91) & (self.test_data['Fare'] <= 14.454), 'Fare'] = 1
+        self.test_data.loc[(self.test_data['Fare'] > 14.454) & (self.test_data['Fare'] <= 31), 'Fare'] = 2
+        self.test_data.loc[self.test_data['Fare'] > 31, 'Fare'] = 3
+        self.test_data['Fare'] = self.test_data['Fare'].astype(int)
+
     def naive_preprocessing_data(self):
         """
             This method is written just to have a data that will be classifiable to have a benchmark.
@@ -96,8 +152,6 @@ class DataPreprocessing:
             - Converting a categorical feature to numerical feature
             - And completing missing value
         """
-
-        self.train_data, self.test_data, gender_submission = self.load_data()
 
         # Here we delete features
         features_to_delete = ['PassengerId', 'Ticket', 'Cabin', 'Name']
@@ -128,7 +182,7 @@ class DataPreprocessing:
         x_train = self.delete_features(self.train_data, ['Survived'])
         y_train = self.train_data["Survived"]
         x_test = self.test_data
-        y_test = gender_submission["Survived"]
+        y_test = self.gender_submission["Survived"]
 
         return x_train, y_train, x_test, y_test
 
