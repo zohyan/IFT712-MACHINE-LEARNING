@@ -131,3 +131,56 @@ class DataPreprocessing:
         y_test = gender_submission["Survived"]
 
         return x_train, y_train, x_test, y_test
+
+    def advanced_preprocessing_data(self):
+        # Here we delete features
+        features_to_delete = ['PassengerId', 'Ticket', 'Cabin']
+
+        self.train_data = self.delete_features(self.train_data, features_to_delete)
+        self.test_data = self.delete_features(self.test_data, features_to_delete)
+
+        # We affect the result to self.dataset
+        self.dataset = [self.train_data, self.test_data]
+
+        # Here we convert categorical features Sex to numerical
+        self.train_data, self.test_data = self.change_categorical_feature_sex_to_numerical(self.train_data,
+                                                                                           self.test_data)
+        # Complete null values in the Age features
+        self.completing_age_features()
+
+        # Create title feature based on Name
+        self.creating_title_feature()
+
+        # Drop Name feature
+        self.train_data = self.delete_features(self.train_data, ['Name'])
+        self.test_data = self.delete_features(self.test_data, ['Name'])
+
+        # Complete null values in the Embarked features
+        self.completing_embarked_features()
+
+        # Here we convert categorical features Embarked to numerical
+        self.change_categorical_feature_embarked_to_numerical()
+
+        # Create AgeBand feature
+        self.create_age_band_features()
+
+        # Create IsAlone feature
+        self.create_is_alone_feature()
+
+        # Complete null values in the Fare features
+        self.completing_fare_features(self.test_data)
+
+        # Create fare band
+        self.create_fare_band()
+
+        # delete some feature
+        self.train_data = self.delete_features(self.train_data, ['Parch', 'SibSp', 'FamilySize'])
+        self.test_data = self.delete_features(self.test_data, ['Parch', 'SibSp', 'FamilySize'])
+
+        # Get the data
+        x_train = self.delete_features(self.train_data, ['Survived'])
+        y_train = self.train_data["Survived"]
+        x_test = self.test_data
+        y_test = self.gender_submission["Survived"]
+
+        return x_train, y_train, x_test, y_test

@@ -22,8 +22,8 @@ class AbstractClassifier:
     def __init__(self, model):
         self.model = model
         self.metrics = Metrics()
-        # self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().advanced_preprocessing_data()
-        self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().naive_preprocessing_data()
+        self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().advanced_preprocessing_data()
+        # self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().naive_preprocessing_data()
 
     def train(self):
         self.model.fit(self.X_train, self.Y_train)

@@ -68,4 +68,4 @@ class DataVisualization:
         plt.show()
 
 dv = DataVisualization()
-dv.correlation_of_numerical_variable_with_the_target_class('Age')
+dv.describe_data()

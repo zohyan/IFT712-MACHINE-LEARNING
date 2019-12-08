@@ -51,13 +51,13 @@ def main():
             if sys.argv[3] == '1':
                 kfold = 5
 
-                n_estimators = [int(x) for x in np.linspace(start=200, stop=500 , num=10)]
-                max_features = ['auto', 'sqrt']
-                max_depth = [int(x) for x in np.linspace(10, 110, num=11)]
+                n_estimators = [450, 470, 500]
+                max_features = ['auto']
+                max_depth = [80, 90, 110]
                 max_depth.append(None)
-                min_samples_split = [2, 5, 10]
-                min_samples_leaf = [1, 2, 4]
-                bootstrap = [True, False]
+                min_samples_split = [5]
+                min_samples_leaf = [4]
+                bootstrap = [True]
 
                 hyperparameters = {
                     'n_estimators': n_estimators,
@@ -96,10 +96,10 @@ def main():
                 kfold = 5
                 hyperparameters = {
                     'hidden_layer_sizes': [(5, ), (5, 5)],
-                    'activation': ['tanh', 'relu'],
-                    'solver': ['adam', 'lbfgs'],
-                    'alpha': [1e-5, 3e-4, 7e-2],
-                    'learning_rate_init':  [1e-2, 1e-3, 1e-4]
+                    'activation': ['relu'],
+                    'solver': ['adam'],
+                    'alpha': [1e-5, 3e-4],
+                    'learning_rate_init':  [1e-2, 1e-3]
                 }
                 model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
@@ -141,7 +141,7 @@ def main():
             if sys.argv[3] == '1':
                 kfold = 5
                 hyperparameters = {
-                    'weights': [[int(x) for x in list("{0:0b}".format(i).zfill(4))] for i in range(1, 2 ** 4)]
+                    'weights': [[int(x) for x in list("{0:0b}".format(i).zfill(4))] for i in range(1, 2 ** 2)]
                 }
                 model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
