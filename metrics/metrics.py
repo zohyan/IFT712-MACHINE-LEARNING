@@ -27,7 +27,7 @@ class Metrics:
             for j in range(confusion_matrix(y, model.predict(x)).shape[1]):
                 plt.text(j, i, str([['TN', 'FP'], ['FN', 'TP']][i][j]) + " = " + str(confusion_matrix(y, model.predict(x))[i, j]), ha="center", va="center")
 
-        plt.title("CONFUSION MATRIX VISUALIZATION OF THE "+label)
+        plt.title("CONFUSION MATRIX VISUALIZATION OF THE "+label.upper())
         plt.show()
 
 
