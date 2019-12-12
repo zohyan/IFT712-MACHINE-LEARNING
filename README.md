@@ -56,7 +56,7 @@ There are two ways to test our project:
 $ python3 main.py <model> <metrics> <cross_validation> <data_preprocessing>
 
 model : adaboost | logistic_regression | random_forest | svm | fully_connected | decision_tree | bagging
-metrics : accuracy | confusion_matrix| roc
+metrics : accuracy | confusion_matrix | roc
 cross_validation : 0 | 1
 data_preprocessing : 0 | 1
 ```
@@ -67,3 +67,7 @@ $ python3 model_summary/model_summary.py <data_preprocessing>
 
 data_preprocessing : 0 | 1
 ```
+
+## Writing
+
+We also write a report that comes with the code.
