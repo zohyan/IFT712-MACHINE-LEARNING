@@ -6,6 +6,7 @@ from sklearn import metrics
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+
 class Metrics:
 
     def accuracy(self, model, x, y, label):
