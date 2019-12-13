@@ -19,11 +19,15 @@ class AbstractClassifier:
         Y_test : The targets of training data (the ground truth label)
     """
 
-    def __init__(self, model):
+    def __init__(self, model, mode='0'):
         self.model = model
         self.metrics = Metrics()
-        self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().advanced_preprocessing_data()
-        # self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().naive_preprocessing_data()
+
+        if mode == '0':
+            self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().naive_preprocessing_data()
+
+        elif mode == '1':
+            self.X_train, self.Y_train, self.X_test, self.Y_test = DataPreprocessing().advanced_preprocessing_data()
 
     def train(self):
         self.model.fit(self.X_train, self.Y_train)
@@ -38,15 +42,15 @@ class AbstractClassifier:
             x, y = self.X_test, self.Y_test
 
         if metrics == "accuracy":
-            self.metrics.accuracy(self.model, x, y, label)
+            self.metrics.accuracy(self.model, y, x, label)
 
         elif metrics == "confusion_matrix":
-            self.metrics.confusion_matrix(self.model, x, y, label)
+            self.metrics.confusion_matrix(self.model, y, x, label)
 
         elif metrics == "roc":
-            self.metrics.plot_roc(self.model, x, y, label)
+            self.metrics.plot_roc(self.model, y, x, label)
 
     def tunning_model(self, hyperparameters, kfold, metrics):
         cross_validate_model = CrossValidation(self.model, hyperparameters, kfold)
         cross_validate_model.fit_and_predict(self.X_train, self.Y_train, self.X_test, self.Y_test, metrics)
-        return cross_validate_model.get_score(self.X_train, self.Y_train)
+        return cross_validate_model.get_score(self.X_test, self.Y_test)
