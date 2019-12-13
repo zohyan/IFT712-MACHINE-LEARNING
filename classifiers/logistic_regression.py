@@ -6,5 +6,5 @@ from classifiers.abstract_classifier import AbstractClassifier
 
 class LogisticRegressionClassifier(AbstractClassifier):
 
-    def __init__(self, penalty='l1', C=1):
-        super().__init__(LogisticRegression(penalty=penalty, solver="liblinear", C=C))
+    def __init__(self, penalty='l1', C=1, mode='0'):
+        super().__init__(LogisticRegression(penalty=penalty, solver="liblinear", C=C), mode)
