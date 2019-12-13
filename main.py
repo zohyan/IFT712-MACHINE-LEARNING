@@ -2,7 +2,6 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.join(os.getcwd())))
 import numpy as np
 from classifiers.logistic_regression import LogisticRegressionClassifier
-from classifiers.perceptron import PerceptronClassifier
 from classifiers.random_forest import RandomForestAlgorithmClassifier
 from classifiers.svm import SVMClassifier
 from classifiers.fully_connected import FullyConnectedClassifier
@@ -10,11 +9,12 @@ from classifiers.adaboost import AdaBoostAlgorithmClassifier
 from classifiers.decision_tree import DecisionTreeAlgorithmClassifier
 from classifiers.bagging import BaggingAlgorithmClassifier
 
+
 def main():
     if sys.argv[2] in ['accuracy', 'confusion_matrix', 'roc']:
 
         if sys.argv[1] == 'logistic_regression':
-            model = LogisticRegressionClassifier()
+            model = LogisticRegressionClassifier(mode=sys.argv[4])
             model.train()
             model.evaluate(label="Training", metrics=sys.argv[2])
             model.evaluate(label="Testing", metrics=sys.argv[2])
@@ -27,23 +27,8 @@ def main():
                 }
                 model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
-        elif sys.argv[1] == 'perceptron':
-            model = PerceptronClassifier()
-            model.train()
-            model.evaluate(label="Training", metrics=sys.argv[2])
-            model.evaluate(label="Testing", metrics=sys.argv[2])
-
-            if sys.argv[3] == '1':
-                kfold = 5
-                hyperparameters = {
-                    'penalty': ['l1', 'l2'],
-                    'alpha': [1e-4, 0.004, 0.005, 0.008],
-                    'tol': [0.20, 0.19, 0.15, 0.25]
-                }
-                model.tunning_model(hyperparameters, kfold, sys.argv[2])
-
         elif sys.argv[1] == 'random_forest':
-            model = RandomForestAlgorithmClassifier()
+            model = RandomForestAlgorithmClassifier(mode=sys.argv[4])
             model.train()
             model.evaluate(label="Training", metrics=sys.argv[2])
             model.evaluate(label="Testing", metrics=sys.argv[2])
@@ -70,7 +55,7 @@ def main():
                 model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'svm':
-            model = SVMClassifier()
+            model = SVMClassifier(mode=sys.argv[4])
 
             model.train()
             model.evaluate(label="Training", metrics=sys.argv[2])
@@ -86,7 +71,7 @@ def main():
                 model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'fully_connected':
-            model = FullyConnectedClassifier()
+            model = FullyConnectedClassifier(mode=sys.argv[4])
 
             model.train()
             model.evaluate(label="Training", metrics=sys.argv[2])
@@ -104,7 +89,7 @@ def main():
                 model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'adaboost':
-            model = AdaBoostAlgorithmClassifier()
+            model = AdaBoostAlgorithmClassifier(mode=sys.argv[4])
             model.train()
             model.evaluate(label="Training", metrics=sys.argv[2])
             model.evaluate(label="Testing", metrics=sys.argv[2])
@@ -119,7 +104,7 @@ def main():
                 model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'decision_tree':
-            model = DecisionTreeAlgorithmClassifier()
+            model = DecisionTreeAlgorithmClassifier(mode=sys.argv[4])
             model.train()
             model.evaluate(label="Training", metrics=sys.argv[2])
             model.evaluate(label="Testing", metrics=sys.argv[2])
@@ -133,7 +118,7 @@ def main():
                 model.tunning_model(hyperparameters, kfold, sys.argv[2])
 
         elif sys.argv[1] == 'bagging':
-            model = BaggingAlgorithmClassifier()
+            model = BaggingAlgorithmClassifier(mode=sys.argv[4])
             model.train()
             model.evaluate(label="Training", metrics=sys.argv[2])
             model.evaluate(label="Testing", metrics=sys.argv[2])
@@ -144,6 +129,7 @@ def main():
                     'weights': [[int(x) for x in list("{0:0b}".format(i).zfill(4))] for i in range(1, 2 ** 2)]
                 }
                 model.tunning_model(hyperparameters, kfold, sys.argv[2])
+
 
 if __name__ == "__main__":
     main()
