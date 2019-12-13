@@ -49,7 +49,7 @@ def main():
         },
         'fully_connected': {
             'hidden_layer_sizes': [(5,), (5, 5)],
-            'activation': ['relu'],
+            'activation': ['tanh'],
             'solver': ['adam'],
             'alpha': [1e-5, 3e-4],
             'learning_rate_init': [1e-2, 1e-4]
