@@ -6,6 +6,6 @@ from classifiers.abstract_classifier import AbstractClassifier
 
 class DecisionTreeAlgorithmClassifier(AbstractClassifier):
 
-    def __init__(self):
+    def __init__(self, mode='0'):
         model = DecisionTreeClassifier()
-        super().__init__(model)
+        super().__init__(model, mode)
