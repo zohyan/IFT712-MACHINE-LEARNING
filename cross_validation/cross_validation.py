@@ -21,7 +21,7 @@ class CrossValidation:
             self.metrics.accuracy(self.clf, y=y_test, pred=prediction)
 
         elif metrics == "confusion_matrix":
-            self.metrics.confusion_matrix(self.clf, y=y_test, pred=prediction, label="validation test")
+            self.metrics.confusion_matrix(self.clf, y=y_test, pred=prediction)
 
         elif metrics == "roc":
             prob = self.clf.fit(x_train, y_train).best_estimator_.predict_proba(x_test)
@@ -29,3 +29,4 @@ class CrossValidation:
 
     def get_score(self, x_test, y_test):
         return round(self.clf.score(x_test, y_test) * 100, 2)
+    
