@@ -12,7 +12,6 @@ class Metrics:
         accuracy = round(model.score(x, y) * 100, 2)
         print(label + ' accuracy', accuracy, " %")
 
-
     def accuracy_after_validation(self, pred, y):
         print('Testing accuracy after cross-validation ', round(metrics.accuracy_score(pred, y) * 100), " %")
 
