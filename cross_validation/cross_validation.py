@@ -18,14 +18,14 @@ class CrossValidation:
         prediction = self.clf.fit(x_train, y_train).best_estimator_.predict(x_test)
 
         if metrics == "accuracy":
-            self.metrics.accuracy_after_validation(prediction, y_test)
+            self.metrics.accuracy(self.clf, y=y_test, pred=prediction)
 
         elif metrics == "confusion_matrix":
-            self.metrics.confusion_matrix_after_validation(prediction, y_test)
+            self.metrics.confusion_matrix(self.clf, y=y_test, pred=prediction)
 
         elif metrics == "roc":
             prob = self.clf.fit(x_train, y_train).best_estimator_.predict_proba(x_test)
-            self.metrics.plot_roc_after_validation(prob[:, 1], y_test)
+            self.metrics.plot_roc(self.clf, y=y_test, prob=prob[:, 1])
 
-    def get_score(self, x_train, y_train):
-        return round(self.clf.score(x_train, y_train) * 100, 2)
+    def get_score(self, x_test, y_test):
+        return round(self.clf.score(x_test, y_test) * 100, 2)
