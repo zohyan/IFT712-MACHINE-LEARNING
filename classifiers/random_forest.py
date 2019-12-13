@@ -6,6 +6,6 @@ from classifiers.abstract_classifier import AbstractClassifier
 
 class RandomForestAlgorithmClassifier(AbstractClassifier):
 
-    def __init__(self):
+    def __init__(self, mode='0'):
         model = RandomForestClassifier(n_estimators=100)
-        super().__init__(model)
+        super().__init__(model, mode)
