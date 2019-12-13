@@ -29,3 +29,4 @@ class CrossValidation:
 
     def get_score(self, x_test, y_test):
         return round(self.clf.score(x_test, y_test) * 100, 2)
+    
