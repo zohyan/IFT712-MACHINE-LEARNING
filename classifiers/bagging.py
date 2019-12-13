@@ -8,7 +8,7 @@ from sklearn.svm import SVC
 
 class BaggingAlgorithmClassifier(AbstractClassifier):
 
-    def __init__(self):
+    def __init__(self, mode='0'):
 
         rf = RandomForestClassifier(n_estimators=100)
         svm = SVC(C=5, gamma="auto", probability=True)
@@ -22,4 +22,4 @@ class BaggingAlgorithmClassifier(AbstractClassifier):
             ('FC_relu', fc_relu)
         ], voting='soft')
 
-        super().__init__(model)
+        super().__init__(model, mode)
