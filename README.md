@@ -70,4 +70,4 @@ data_preprocessing : 0 | 1
 
 ## Writing
 
-We also write a [report](Rapport_de_projet_Machine_Learning.pdf) that comes with the code.
+We also write a [report](Rapport_de_Projet_Machine_Learning.pdf) that comes with the code.
